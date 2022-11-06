@@ -144,8 +144,71 @@ button::after {
 /* QUIZ PAGE */
 
 .quizPage {
+    width: 100%;
+    height: 100%;
     display: none;
     gap: 1rem;
+}
+
+#timeLimit {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10em;
+}
+
+.base-timer {
+    width: 200px;
+    height: 200px;
+}
+
+.base-timer__svg {
+    transform: scaleX(-1);
+}
+
+.base-timer__circle {
+    fill: none;
+    stroke: none;
+}
+
+.base-timer__path-elapsed {
+    stroke-width: 7px;
+    stroke: #252525;
+}
+
+.base-timer__path-remaining {
+    stroke-width: 7px;
+    stroke-linecap: round;
+    transform: rotate(90deg);
+    transform-origin: center;
+    transition: 1s linear all;
+    fill-rule: nonzero;
+    stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+    color: rgb(65, 184, 131);
+}
+
+.base-timer__path-remaining.orange {
+    color: rgb(255, 192, 76);
+}
+
+.base-timer__path-remaining.red {
+    color: rgb(190, 55, 55);
+}
+
+.base-timer__label {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    top: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    font-family: "Montserrat";
+    color: #1e4869;
 }
 
 #question {
@@ -153,8 +216,9 @@ button::after {
     font-family: system-UI;
     font-weight: bold;
     font-size: 3rem;
-    background: linear-gradient(to left, #c294e5, #7287b1, #8CA6DB, #c294e5);
+    background: linear-gradient(to left, #c294e5, #7287b1, #8ca6db, #c294e5);
     background-size: 200%;
+    margin-top: 2em;
     margin-bottom: 3em;
     text-align: center;
     -webkit-background-clip: text;
@@ -174,7 +238,7 @@ button::after {
 .answer {
     color: #d7d8e7;
     font-family: "Montserrat";
-    font-size: 1em;
+    font-size: 18px;
     font-weight: 300;
     background-color: #243151;
     margin: 0 1%;
@@ -183,6 +247,6 @@ button::after {
     text-align: center;
     border-radius: 15px;
     border: 3px solid #1e4869;
-    padding: 1em 3em;
+    padding: 2em 5em;
     position: relative;
 }
