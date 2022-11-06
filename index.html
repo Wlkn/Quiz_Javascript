@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Quiz! - By Mohamed Ali</title>
+        <link rel="stylesheet" href="style.css" />
+        <link
+            href="https://fonts.googleapis.com/css?family=Montserrat"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.cdnfonts.com/css/sf-pro-display"
+            rel="stylesheet"
+        />
+        <link
+            href="https://fonts.googleapis.com/css?family=Poppins"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <div class="frontPage">
+            <div id="upperText">Are you ready to test your</div>
+            <p
+                data-typewriter="Intelligence?...,Mind?...,Knowledge?...,Intellect?..,IQ?..."
+            ></p>
+            <div id="inputBar">
+                <label for="questions"
+                    >Please enter the number of questions that you want
+                    (1-10):</label
+                >
+                <input
+                    type="number"
+                    id="questions"
+                    name="questions"
+                    min="1"
+                    max="10"
+                />
+            </div>
+            <div class="buttons">
+                <button id="start-button">START!</button>
+            </div>
+        </div>
+        <div class="quizPage">
+            <div id="timeLimit"></div>
+            <div id="question">
+                Which country is associated with the drink tuba?
+            </div>
+            <div class="answers">
+                <div class="answer" id="ans1">This is an answer</div>
+                <div class="answer" id="ans2">This is an answer</div>
+                <div class="answer" id="ans3">This is an answer</div>
+                <div class="answer" id="ans4">This is an answer</div>
+            </div>
+            <div id="bubbleAnswers"></div>
+        </div>
+
+        <script defer src="script.js"></script>
+    </body>
+</html>
