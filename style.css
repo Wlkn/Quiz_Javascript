@@ -224,7 +224,8 @@ button::after {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    white-space: nowrap;
+    inline-size: 100%;
+    overflow-wrap: break-word;
 }
 
 .answers {
@@ -259,4 +260,34 @@ button::after {
     background-color: #bbb;
     border-radius: 50%;
     display: flex;
+}
+.endPage {
+    display: none;
+    width: 100%;
+    height: 100%;
+    gap: 1rem;
+}
+#scoreText {
+    animation: background-pan 3s linear infinite;
+    font-family: system-UI;
+    font-weight: bold;
+    font-size: 3rem;
+    background: linear-gradient(to left, #c294e5, #7287b1, #8ca6db, #c294e5);
+    background-size: 200%;
+    margin-top: 2em;
+    margin-bottom: 3em;
+    text-align: center;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    white-space: nowrap;
+    overflow-wrap: normal;
+}
+#emoji {
+    width: 59px;
+    height: 59px;
+    border: 1px solid red;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
