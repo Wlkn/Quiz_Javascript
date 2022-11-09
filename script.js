@@ -22,7 +22,6 @@ let questionNb;
 startButton.addEventListener("click", () => {
     questionNb = parseInt(questionNbStr.value);
     if (questionNb > minQuestion && questionNb <= maxQuestion) {
-        console.log("Number of questions has been accepted");
         frontPage.style.display = "none";
         quizPage.style.display = "block";
         apiUrl = `${apiUrl}limit=${questionNb}`;
@@ -30,15 +29,11 @@ startButton.addEventListener("click", () => {
         fetchJSON((data) => {
             questions = data;
             passToNextQuestion();
-        }); // get the json file
-
-        console.log("This should print out the Custom LIMIT url " + apiUrl);
+        });
 
         startTimer();
-
-        createDots(); // this creates the number of dots that will display if you got a good answer or not.
+        createDots();
     } else {
-        console.log("Number of quesions has been revoked");
         alert("Please enter a valid number of questions.");
     }
 });
@@ -46,16 +41,14 @@ startButton.addEventListener("click", () => {
 async function fetchJSON(callback = () => {}) {
     const response = await fetch(apiUrl);
     const data = await response.json();
-    console.log(data);
 
     callback(data);
-    // getNewQuestion(data);
-    // getGoodAnswer(data);
 }
 
 function createDots() {
     for (let i = 0; i < questionNb; i++) {
         let newSpan = document.createElement("span");
+
         newSpan.setAttribute("data-number", i);
         newSpan.classList.add("dot");
 
@@ -67,7 +60,6 @@ function createDots() {
 function passToNextQuestion() {
     currentQuestion = questions[currentQuestionNumber];
     displayQuestionAndAnswers();
-    // startTimer();
 }
 
 function displayQuestionAndAnswers() {
@@ -79,15 +71,14 @@ function displayQuestionAndAnswers() {
         questions[currentQuestionNumber].correctAnswer; // [3]
 
     for (let i = 0; i < numberOfAnswers - 1; i++) {
-        let poppedQuestion = questionNumPool.pop();
-        let btnGetted = answers[poppedQuestion];
-        btnGetted.innerHTML =
+        // let poppedQuestion = questionNumPool.pop();
+        // let btnGetted = answers[poppedQuestion];
+        // btnGetted.innerHTML
+        answers[questionNumPool.pop()].innerHTML =
             questions[currentQuestionNumber].incorrectAnswers[i];
     }
 
     question.innerHTML = questions[currentQuestionNumber].question;
-
-    // console.log(data[0].correctAnswer);
 }
 
 answers.forEach((e) => {
@@ -96,15 +87,13 @@ answers.forEach((e) => {
             Array.from(document.querySelectorAll(".dot"))[
                 currentQuestionNumber
             ].style.backgroundColor = "lightGreen";
+
             score++;
-            console.log("Right Answer");
         } else {
             Array.from(document.querySelectorAll(".dot"))[
                 currentQuestionNumber
             ].style.backgroundColor = "Crimson";
-            console.log("Wrong Answer");
         }
-        // resetTimer();
         checkQuestionScore();
         passToNextQuestion();
     });
@@ -117,53 +106,7 @@ function shuffleArray(array) {
     }
     return array;
 }
-// function getNewQuestion(data) {
-//     // function showQuestion(data){
 
-//     question.innerHTML = data[0].question;
-// }
-
-// function getGoodAnswer(data) {
-//     let correctAnswer = data.correctAnswer;
-//     let incorrectAnswer = data[].incorrectAnswers;
-//     console.log(incorrectAnswer)
-//     let optionsList = incorrectAnswer;
-//     optionsList.splice(
-//         Math.floor(Math.random() * (incorrectAnswer.length + 1)),
-//         0,
-//         correctAnswer
-//     );
-//     console.log(correctAnswer);
-//     choicesList[0].textContent = data[0].correctAnswer;
-//     console.log(
-//         `This should print out the correct answer [0] ${data[0].correctAnswer}`
-//     );
-//     console.log(
-//         `This should print out the text content of choices [0]${choicesList[0].textContent}`
-//     );
-// }
-
-//make the api work with the start button and nb of questions //DONE
-//import JSON // DONE
-//make answers change the question and answers
-//implement timer logic
-//implement good answers/bad answers displayer (bottom left)
-//make end game screen
-//
-//if you have enough time:
-//make website mobile-compatible
-//minor adjustments
-//
-//
-//
-//
-//
-//
-//
-
-// TYPEWRITER SCRIPT FOR THE MAIN PAGE'S TEXT //
-// TYPEWRITER SCRIPT FOR THE MAIN PAGE'S TEXT //
-// TYPEWRITER SCRIPT FOR THE MAIN PAGE'S TEXT //
 class Typerwriter {
     constructor(el, options) {
         this.el = el;
@@ -212,6 +155,7 @@ document.querySelectorAll("[data-typewriter]").forEach((el) => {
         repeat: true,
     });
 });
+
 //https://codepen.io/Coding-in-Public/pen/yLPYjrv
 // Credit: Mateusz Rybczonec
 
@@ -239,8 +183,7 @@ let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let remainingPathColor = COLOR_CODES.info.color;
 
-
-function setProgressBar(){
+function setProgressBar() {
     document.getElementById("progressBar").innerHTML = `
     <div class="base-timer">
       <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
@@ -272,36 +215,31 @@ function onTimesUp() {
     Array.from(document.querySelectorAll(".dot"))[
         currentQuestionNumber
     ].style.backgroundColor = "Crimson";
+
     checkQuestionScore();
     passToNextQuestion();
-    // resetTimer();
 }
 
 function startTimer() {
     timerInterval = setInterval(() => {
         timePassed = timePassed += 1;
         timeLeft = TIME_LIMIT - timePassed;
+
         document.getElementById("base-timer-label").innerHTML =
             formatTime(timeLeft);
+
         setCircleDasharray();
         setRemainingPathColor(timeLeft);
 
         if (timeLeft === 0) {
             onTimesUp();
             setProgressBar();
+
             timePassed = 0;
-            console.log("Time up!");
         }
     }, 1000);
 }
-// function resetTimer() {
-//     clearInterval(timerInterval);
-//     timePassed = timePassed += 1;
-//     timeLeft = 6;
-//     startTimer();
 
-//     console.log("Time reset");
-// }
 function formatTime(time) {
     const minutes = Math.floor(time / 60);
     let seconds = time % 60;
@@ -351,7 +289,6 @@ function checkQuestionScore() {
         dislayEndPage();
         currentQuestionNumber--;
     }
-    console.log("continuing");
 }
 function dislayEndPage() {
     quizPage.style.display = "none";
@@ -367,6 +304,7 @@ function dislayEndPage() {
     } else if (scorePercentage < 80 && scorePercentage >= 60) {
         emoji.src = "/pictures/80-60.jpg";
     } else if (scorePercentage < 100 && scorePercentage >= 80) {
-        emoji.src = "C:/Users/aliba/Documents/Quiz_Javascript/pictures/100-80.jpg";
-    } else console.log("error");
+        emoji.src =
+            "C:/Users/aliba/Documents/Quiz_Javascript/pictures/100-80.jpg";
+    } else console.log("Error, could not load the picture!");
 }
