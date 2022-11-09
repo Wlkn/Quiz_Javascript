@@ -1,80 +1,120 @@
 const frontPage = document.querySelector(".frontPage");
 const quizPage = document.querySelector(".quizPage");
+const endPage = document.querySelector(".endPage");
 const startButton = document.querySelector("#start-button");
 const timeLimit = document.querySelector("#timeLimit");
 const question = document.querySelector("#question");
-const answers = document.querySelectorAll(".answer");
+const scoreText = document.querySelector("#scoreText");
+const emoji = document.querySelector("#emoji");
+const answers = Array.from(document.querySelectorAll(".answer"));
 const bubbleAnswers = document.querySelector("#bubbleAnswers");
 const inputBar = document.querySelector("#questions");
 const questionNbStr = document.querySelector("#questions");
 const minQuestion = 0;
 const maxQuestion = 10;
 let apiUrl = "https://the-trivia-api.com/api/questions?";
-let loadedQuestions = 0;
-let currentQuestions = {};
+let currentQuestion = {};
 let questions = [];
+let currentQuestionNumber = 0;
 let score = 0;
-let questionNb = parseInt(questionNbStr.value);
+let questionNb;
 
 startButton.addEventListener("click", () => {
     questionNb = parseInt(questionNbStr.value);
-    if (
-        questionNbStr.value.includes(".") == false &&
-        questionNb > minQuestion &&
-        questionNb <= maxQuestion
-    ) {
+    if (questionNb > minQuestion && questionNb <= maxQuestion) {
         console.log("Number of questions has been accepted");
         frontPage.style.display = "none";
         quizPage.style.display = "block";
         apiUrl = `${apiUrl}limit=${questionNb}`;
 
-        fetchJSON(); // get the json file
+        fetchJSON((data) => {
+            questions = data;
+            passToNextQuestion();
+        }); // get the json file
 
-        console.log("This should print out the Custom LIMIT url" + apiUrl);
+        console.log("This should print out the Custom LIMIT url " + apiUrl);
 
         createDots(); // this creates the number of dots that will display if you got a good answer or not.
-
-        startTimer();
     } else {
         console.log("Number of quesions has been revoked");
         alert("Please enter a valid number of questions.");
     }
 });
 
-async function fetchJSON() {
+async function fetchJSON(callback = () => {}) {
     const response = await fetch(apiUrl);
     const data = await response.json();
     console.log(data);
+
+    callback(data);
     // getNewQuestion(data);
     // getGoodAnswer(data);
-    displayQuestionAndAnswers(data);
 }
 
 function createDots() {
     for (let i = 0; i < questionNb; i++) {
-        var newSpan = document.createElement("span");
+        let newSpan = document.createElement("span");
+        newSpan.setAttribute("data-number", i);
         newSpan.classList.add("dot");
 
-        var bubbleAnswersDiv = document.getElementById("bubbleAnswers");
+        let bubbleAnswersDiv = document.getElementById("bubbleAnswers");
         bubbleAnswersDiv.appendChild(newSpan);
     }
 }
 
-answers[1].addEventListener("click", () => {
-    console.log("cledab")
-})
-
-function displayQuestionAndAnswers(data) {
-    //displays a question
-
-    question.innerHTML = data[0].question;
-    answers[0].innerHTML = data[0].correctAnswer;
-    answers[1].innerHTML = data[0].incorrectAnswers[0];
-    answers[2].innerHTML = data[0].incorrectAnswers[1];
-    answers[3].innerHTML = data[0].incorrectAnswers[2]
-    console.log(data[0].correctAnswer);
+function passToNextQuestion() {
+    currentQuestion = questions[currentQuestionNumber];
+    displayQuestionAndAnswers();
+    // startTimer();
 }
 
+function displayQuestionAndAnswers() {
+    //displays a question
+    let questionNumPool = shuffleArray([0, 1, 2, 3]); // 1 3 0 4
+    let numberOfAnswers = 4;
+
+    answers[questionNumPool.pop()].innerHTML =
+        questions[currentQuestionNumber].correctAnswer; // [3]
+
+    for (let i = 0; i < numberOfAnswers - 1; i++) {
+        let poppedQuestion = questionNumPool.pop();
+        let btnGetted = answers[poppedQuestion];
+        btnGetted.innerHTML =
+            questions[currentQuestionNumber].incorrectAnswers[i];
+    }
+
+    question.innerHTML = questions[currentQuestionNumber].question;
+
+    // console.log(data[0].correctAnswer);
+}
+
+answers.forEach((e) => {
+    e.addEventListener("click", () => {
+        if (e.textContent === questions[currentQuestionNumber].correctAnswer) {
+            Array.from(document.querySelectorAll(".dot"))[
+                currentQuestionNumber
+            ].style.backgroundColor = "lightGreen";
+            score++;
+            console.log("Right Answer");
+        } else {
+            Array.from(document.querySelectorAll(".dot"))[
+                currentQuestionNumber
+            ].style.backgroundColor = "Crimson";
+            console.log("Wrong Answer");
+        }
+        // resetTimer();
+        checkQuestionScore();
+        passToNextQuestion();
+    });
+});
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
 // function getNewQuestion(data) {
 //     // function showQuestion(data){
 
@@ -191,7 +231,7 @@ const COLOR_CODES = {
     },
 };
 
-const TIME_LIMIT = 20;
+const TIME_LIMIT = 5;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
@@ -222,7 +262,12 @@ document.getElementById("progressBar").innerHTML = `
 `;
 
 function onTimesUp() {
-    clearInterval(timerInterval);
+    Array.from(document.querySelectorAll(".dot"))[
+        currentQuestionNumber
+    ].style.backgroundColor = "Crimson";
+    checkQuestionScore();
+    passToNextQuestion();
+    // resetTimer();
 }
 
 function startTimer() {
@@ -236,10 +281,18 @@ function startTimer() {
 
         if (timeLeft === 0) {
             onTimesUp();
+            console.log("Time up!");
         }
     }, 1000);
 }
+// function resetTimer() {
+//     clearInterval(timerInterval);
+//     timePassed = timePassed += 1;
+//     timeLeft = 6;
+//     startTimer();
 
+//     console.log("Time reset");
+// }
 function formatTime(time) {
     const minutes = Math.floor(time / 60);
     let seconds = time % 60;
@@ -282,4 +335,29 @@ function setCircleDasharray() {
     document
         .getElementById("base-timer-path-remaining")
         .setAttribute("stroke-dasharray", circleDasharray);
+}
+function checkQuestionScore() {
+    currentQuestionNumber++;
+    if (currentQuestionNumber >= questions.length) {
+        dislayEndPage();
+        currentQuestionNumber--;
+    }
+    console.log("continuing");
+}
+function dislayEndPage() {
+    quizPage.style.display = "none";
+    endPage.style.display = "block";
+    scoreText.innerHTML = `Score : ${score} / ${questions.length}`;
+    let scorePercentage = (score / questions.length) * 100;
+    if (scorePercentage < 20 && scorePercentage >= 0) {
+        emoji.src = "/pictures/20-0.jpg";
+    } else if (scorePercentage < 40 && scorePercentage >= 20) {
+        emoji.src = "/pictures/40-20.jpg";
+    } else if (scorePercentage < 60 && scorePercentage >= 40) {
+        emoji.src = "/pictures/60-40.jpg";
+    } else if (scorePercentage < 80 && scorePercentage >= 60) {
+        emoji.src = "/pictures/80-60.jpg";
+    } else if (scorePercentage < 100 && scorePercentage >= 80) {
+        emoji.src = "C:/Users/aliba/Documents/Quiz_Javascript/pictures/100-80.jpg";
+    } else console.log("error");
 }
