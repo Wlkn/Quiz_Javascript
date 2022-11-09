@@ -34,6 +34,8 @@ startButton.addEventListener("click", () => {
 
         console.log("This should print out the Custom LIMIT url " + apiUrl);
 
+        startTimer();
+
         createDots(); // this creates the number of dots that will display if you got a good answer or not.
     } else {
         console.log("Number of quesions has been revoked");
@@ -231,35 +233,40 @@ const COLOR_CODES = {
     },
 };
 
-const TIME_LIMIT = 5;
+const TIME_LIMIT = 20;
 let timePassed = 0;
 let timeLeft = TIME_LIMIT;
 let timerInterval = null;
 let remainingPathColor = COLOR_CODES.info.color;
 
-document.getElementById("progressBar").innerHTML = `
-<div class="base-timer">
-  <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-    <g class="base-timer__circle">
-      <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
-      <path
-        id="base-timer-path-remaining"
-        stroke-dasharray="283"
-        class="base-timer__path-remaining ${remainingPathColor}"
-        d="
-          M 50, 50
-          m -45, 0
-          a 45,45 0 1,0 90,0
-          a 45,45 0 1,0 -90,0
-        "
-      ></path>
-    </g>
-  </svg>
-  <span id="base-timer-label" class="base-timer__label">${formatTime(
-      timeLeft
-  )}</span>
-</div>
-`;
+
+function setProgressBar(){
+    document.getElementById("progressBar").innerHTML = `
+    <div class="base-timer">
+      <svg class="base-timer__svg" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <g class="base-timer__circle">
+          <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
+          <path
+            id="base-timer-path-remaining"
+            stroke-dasharray="283"
+            class="base-timer__path-remaining ${remainingPathColor}"
+            d="
+              M 50, 50
+              m -45, 0
+              a 45,45 0 1,0 90,0
+              a 45,45 0 1,0 -90,0
+            "
+          ></path>
+        </g>
+      </svg>
+      <span id="base-timer-label" class="base-timer__label">${formatTime(
+          timeLeft
+      )}</span>
+    </div>
+    `;
+}
+
+setProgressBar();
 
 function onTimesUp() {
     Array.from(document.querySelectorAll(".dot"))[
@@ -281,6 +288,8 @@ function startTimer() {
 
         if (timeLeft === 0) {
             onTimesUp();
+            setProgressBar();
+            timePassed = 0;
             console.log("Time up!");
         }
     }, 1000);
