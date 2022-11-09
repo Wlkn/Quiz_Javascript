@@ -250,9 +250,17 @@ button::after {
     border: 3px solid #1e4869;
     padding: 2em 5em;
     position: relative;
+    user-select: none;
+}
+.answer:hover {
+opacity: 85%;
+}
+.answer:active {
+    opacity: 110%;
+    box-shadow: 2px 3px 5px #4d9ffc;
 }
 #bubbleAnswers {
-    display:flex;
+    display: flex;
 }
 .dot {
     height: 25px;
