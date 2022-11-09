@@ -296,15 +296,14 @@ function dislayEndPage() {
     scoreText.innerHTML = `Score : ${score} / ${questions.length}`;
     let scorePercentage = (score / questions.length) * 100;
     if (scorePercentage < 20 && scorePercentage >= 0) {
-        emoji.src = "/pictures/20-0.jpg";
+        emoji.src = "./pictures/20-0.jpg";
     } else if (scorePercentage < 40 && scorePercentage >= 20) {
-        emoji.src = "/pictures/40-20.jpg";
+        emoji.src = "./pictures/40-20.jpg";
     } else if (scorePercentage < 60 && scorePercentage >= 40) {
-        emoji.src = "/pictures/60-40.jpg";
+        emoji.src = "./pictures/60-40.jpg";
     } else if (scorePercentage < 80 && scorePercentage >= 60) {
-        emoji.src = "/pictures/80-60.jpg";
+        emoji.src = "./pictures/80-60.jpg";
     } else if (scorePercentage < 100 && scorePercentage >= 80) {
-        emoji.src =
-            "C:/Users/aliba/Documents/Quiz_Javascript/pictures/100-80.jpg";
+        emoji.src = "./pictures/100-80.jpg";
     } else console.log("Error, could not load the picture!");
 }
