@@ -94,8 +94,11 @@ answers.forEach((e) => {
                 currentQuestionNumber
             ].style.backgroundColor = "Crimson";
         }
-        checkQuestionScore();
-        passToNextQuestion();
+        timeLeft = 20;
+        timePassed = 0;
+
+        onTimesUp();
+        setProgressBar();
     });
 });
 
