@@ -97,7 +97,8 @@ answers.forEach((e) => {
         timeLeft = 20;
         timePassed = 0;
 
-        onTimesUp();
+        checkQuestionScore();
+        passToNextQuestion();
         setProgressBar();
     });
 });
