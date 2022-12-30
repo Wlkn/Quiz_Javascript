@@ -12,7 +12,9 @@ const inputBar = document.querySelector("#questions");
 const questionNbStr = document.querySelector("#questions");
 const minQuestion = 0;
 const maxQuestion = 10;
-let apiUrl = "https://the-trivia-api.com/api/questions?";
+// https://the-trivia-api.com/api/questions?categories=science,sport_and_leisure&limit=5&difficulty=hard
+let apiUrl =
+    "https://the-trivia-api.com/api/questions?categories=science,sport_and_leisure&";
 let currentQuestion = {};
 let questions = [];
 let currentQuestionNumber = 0;
@@ -23,8 +25,9 @@ startButton.addEventListener("click", () => {
     questionNb = parseInt(questionNbStr.value);
     if (questionNb > minQuestion && questionNb <= maxQuestion) {
         frontPage.style.display = "none";
-        quizPage.style.display = "block";
-        apiUrl = `${apiUrl}limit=${questionNb}`;
+        quizPage.style.display = "flex";
+        apiUrl = `${apiUrl}limit=${questionNb}&difficulty=hard`;
+        console.log(apiUrl);
 
         fetchJSON((data) => {
             questions = data;
@@ -102,6 +105,24 @@ answers.forEach((e) => {
         setProgressBar();
     });
 });
+
+function dislayEndPage() {
+    quizPage.style.display = "none";
+    endPage.style.display = "block";
+    scoreText.innerHTML = `Score : ${score} / ${questions.length}`;
+    let scorePercentage = (score / questions.length) * 100;
+    if (scorePercentage < 20 && scorePercentage >= 0) {
+        emoji.src = "./pictures/20-0.jpg";
+    } else if (scorePercentage < 40 && scorePercentage >= 20) {
+        emoji.src = "./pictures/40-20.jpg";
+    } else if (scorePercentage < 60 && scorePercentage >= 40) {
+        emoji.src = "./pictures/60-40.jpg";
+    } else if (scorePercentage < 80 && scorePercentage >= 60) {
+        emoji.src = "./pictures/80-60.jpg";
+    } else if (scorePercentage < 100 && scorePercentage >= 80) {
+        emoji.src = "./pictures/100-80.jpg";
+    } else console.log("Error, could not load the picture!");
+}
 
 function shuffleArray(array) {
     for (let i = array.length - 1; i > 0; i--) {
@@ -293,21 +314,4 @@ function checkQuestionScore() {
         dislayEndPage();
         currentQuestionNumber--;
     }
-}
-function dislayEndPage() {
-    quizPage.style.display = "none";
-    endPage.style.display = "block";
-    scoreText.innerHTML = `Score : ${score} / ${questions.length}`;
-    let scorePercentage = (score / questions.length) * 100;
-    if (scorePercentage < 20 && scorePercentage >= 0) {
-        emoji.src = "./pictures/20-0.jpg";
-    } else if (scorePercentage < 40 && scorePercentage >= 20) {
-        emoji.src = "./pictures/40-20.jpg";
-    } else if (scorePercentage < 60 && scorePercentage >= 40) {
-        emoji.src = "./pictures/60-40.jpg";
-    } else if (scorePercentage < 80 && scorePercentage >= 60) {
-        emoji.src = "./pictures/80-60.jpg";
-    } else if (scorePercentage < 100 && scorePercentage >= 80) {
-        emoji.src = "./pictures/100-80.jpg";
-    } else console.log("Error, could not load the picture!");
 }

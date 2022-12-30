@@ -1,4 +1,3 @@
-
 @keyframes background-pan {
     from {
         background-position: 0% center;
@@ -23,36 +22,54 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
 }
 
 /* MAIN PAGE */
 
 body {
-    display: grid;
-    place-items: center;
-    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    /* padding: 4rem; */
     min-height: 100vh;
     background-color: #252525;
+    /* padding: 40px; */
+    overflow-x: hidden; /* For Opera */
+    /* -webkit-box-shadow: inset #19d4ff 0 0 0 5px, inset #18cdf7 0 0 0 1px,
+        inset #53dfff 0 0 0 10px, inset #50d8f7 0 0 0 11px,
+        inset #8ce9ff 0 0 0 16px, inset #88e2f7 0 0 0 17px,
+        inset #c5f4ff 0 0 0 22px, inset #bfecf7 0 0 0 23px;
+    -moz-box-shadow: inset #19d4ff 0 0 0 5px, inset #18cdf7 0 0 0 1px,
+        inset #53dfff 0 0 0 10px, inset #50d8f7 0 0 0 11px,
+        inset #8ce9ff 0 0 0 16px, inset #88e2f7 0 0 0 17px,
+        inset #c5f4ff 0 0 0 22px, inset #bfecf7 0 0 0 23px;
+    box-shadow: inset #19d4ff 0 0 0 5px, inset #18cdf7 0 0 0 1px,
+        inset #53dfff 0 0 0 10px, inset #50d8f7 0 0 0 11px,
+        inset #8ce9ff 0 0 0 16px, inset #88e2f7 0 0 0 17px,
+        inset #c5f4ff 0 0 0 22px, inset #bfecf7 0 0 0 23px; */
 }
 
 .frontPage {
-    display: grid;
-    place-items: center;
-    gap: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #upperText {
     animation: background-pan 3s linear infinite;
     font-family: system-UI;
     font-weight: bold;
-    font-size: 5rem;
+    font-size: 5em;
     background: linear-gradient(to left, #2bc0e4, #eaecc6, #c6ecd1, #2bc0e4);
     background-size: 200%;
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
-    white-space: nowrap;
+    flex-wrap: wrap;
 }
 
 label {
@@ -64,17 +81,19 @@ label {
 
 input,
 label {
-    margin-top: 2em;
+    margin-top: 1em;
 }
 
 [data-typewriter] {
     font-family: system-UI;
     font-weight: bold;
-    font-size: 4.5rem;
+    font-size: 4rem;
     color: #2091ad;
     height: 6rem;
     border-right: 0.8rem solid transparent;
-    padding: 0.6rem;
+    /* padding: 0.6rem; */
+    justify-content: center;
+    align-items: center;
 }
 
 [data-typewriter]:not(.typing) {
@@ -114,10 +133,10 @@ button::after {
 
 #start-button {
     overflow: hidden;
+    margin-top: 2em;
 }
 
 #start-button::after {
-    /*background-color: #f00;*/
     height: 100%;
     left: -50%;
     top: 0;
@@ -139,17 +158,16 @@ button::after {
 /* QUIZ PAGE */
 
 .quizPage {
-    width: 100%;
-    height: 100%;
     display: none;
-    gap: 1rem;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
 }
 
 #timeLimit {
     position: relative;
     display: flex;
     justify-content: center;
-    margin-bottom: 10em;
 }
 
 .base-timer {
@@ -225,9 +243,8 @@ button::after {
 
 .answers {
     display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    align-items: baseline;
+    flex-direction: column;
+    align-items: center;
     margin: 4%;
 }
 
@@ -248,12 +265,42 @@ button::after {
     user-select: none;
 }
 .answer:hover {
-opacity: 85%;
+    opacity: 85%;
 }
 .answer:active {
     opacity: 110%;
     box-shadow: 2px 3px 5px #4d9ffc;
 }
+
+@media (max-width: 1100px) {
+    #question {
+        padding: 0;
+        margin: 0;
+    }
+    .answers {
+        flex-direction: column;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+    .answer {
+        margin: 0;
+        flex-wrap: wrap;
+        min-width: 100px;
+        max-width: 100vh;
+        max-height: 1em;
+    }
+    #timeLimit {
+        margin: 1em;
+    }
+    #upperText{
+        margin: 1em;
+    }
+    .dot {
+        margin: 1em;
+    }
+}
+
 #bubbleAnswers {
     display: flex;
 }
